@@ -2,10 +2,9 @@ package ru.xamrah.budget.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.xamrah.budget.domain.Account;
-import ru.xamrah.budget.domain.Transaction;
-import ru.xamrah.budget.domain.User;
+import ru.xamrah.budget.domain.*;
 import ru.xamrah.budget.repo.AccountRepo;
+import ru.xamrah.budget.repo.CategoryRepo;
 import ru.xamrah.budget.repo.TransactionRepo;
 import ru.xamrah.budget.repo.UserRepo;
 
@@ -23,6 +22,9 @@ public class DataIni {
     @Autowired
     TransactionRepo transactionRepo;
 
+    @Autowired
+    CategoryRepo categoryRepo;
+
     public void init(){
         User user = new User("Иваной", "Иван", "Иванович", 21);
         userRepo.save(user);
@@ -30,8 +32,10 @@ public class DataIni {
         accountRepo.save(account);
         Account account1 = new Account(888888L, user, "TestAcc", "Test");
         accountRepo.save(account1);
+        Category category = new Category("Другое");
+        categoryRepo.save(category);
         Short status = 0;
-        Transaction transaction = new Transaction(1L, account, 1000L, LocalDateTime.now(), status);
+        Transaction transaction = new Transaction(Type.EXPENSE, 1L, account, 1000L, category, LocalDateTime.now(), status);
         transactionRepo.save(transaction);
     }
 }
