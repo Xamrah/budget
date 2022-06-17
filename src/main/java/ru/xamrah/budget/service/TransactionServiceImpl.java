@@ -3,7 +3,8 @@ package ru.xamrah.budget.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.xamrah.budget.domain.Transaction;
-import ru.xamrah.budget.domain.TransactionDto;
+import ru.xamrah.budget.dto.TransactionDto;
+import ru.xamrah.budget.factories.TransactionDtoFactory;
 import ru.xamrah.budget.repo.CategoryRepo;
 import ru.xamrah.budget.repo.TransactionRepo;
 
@@ -19,11 +20,12 @@ public class TransactionServiceImpl implements TransactionService {
     CategoryRepo categoryRepo;
 
     @Autowired
-    MappingUtils mappingUtils;
+    TransactionDtoFactory transactionDtoFactory;
+
 
     @Override
-    public void create(TransactionDto transaction) {
-        transactionRepo.save(mappingUtils.mapToTransaction(transaction));
+    public void create(TransactionDto transactionDto) {
+        transactionRepo.save(transactionDtoFactory.mapToTransaction(transactionDto));
     }
 
     @Override
@@ -39,16 +41,17 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Long amountForTheLastMonth(Long id) {
-        return null;
+        return transactionRepo.findTotalAmountWithProcessingTimeAfterById(id, LocalDateTime.now().minusMonths(1));
+
     }
 
     @Override
-    public Long amountForThePeriod(LocalDateTime start, LocalDateTime end, Long id) {
-        return null;
+    public Long amountForThePeriod(Long id, LocalDateTime start, LocalDateTime end) {
+        return transactionRepo.findTotalAmountWithProcessingTimeBetweenById(id, start, end);
     }
 
     @Override
     public Long totalAmount(Long id) {
-        return null;
+        return transactionRepo.findTotalAmountById(id);
     }
 }
