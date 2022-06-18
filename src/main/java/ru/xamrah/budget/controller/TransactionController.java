@@ -28,7 +28,7 @@ public class TransactionController {
     @PostMapping(value = "/transaction/{id}")
     public ResponseEntity<?> changeCategory(@PathVariable(name = "id") Long id, @RequestParam Long categoryId){
         transactionService.changeCategory(categoryId,id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping(value = "transaction/amount/{id}")
