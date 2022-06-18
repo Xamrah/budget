@@ -18,6 +18,8 @@ public class User {
     private String surname;
     private String firstName;
     private String secondName;
+    private String email;
+    private String password;
     private Integer age;
     @OneToMany(targetEntity = Account.class, mappedBy = "owner")
     private List<Account> accounts;
